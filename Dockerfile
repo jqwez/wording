@@ -5,7 +5,7 @@ RUN apk add --no-cache \
     curl \
     build-base
 
-RUN curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.17/tailwindcss-linux-arm64 && chmod +x tailwindcss-linux-arm64 && mv tailwindcss-linux-arm64 /bin/tailwindcss
+RUN curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.17/tailwindcss-linux-x64 && chmod +x tailwindcss-linux-x64 && mv tailwindcss-linux-arm64 /bin/tailwindcss
 
 RUN go install github.com/a-h/templ/cmd/templ@latest
 
