@@ -1,0 +1,102 @@
+package pages
+
+import (
+	"github.com/jqwez/wording/games"
+	"github.com/jqwez/wording/templates"
+	"github.com/jqwez/wording/games"
+	"github.com/jqwez/wording/games"
+	"sort"
+)
+
+templ BlossomMainPage(hideInput bool) {
+	@templates.Base() {
+		<div class="flex flex-col items-center justify-center bg-gray-800 min-h-screen">
+			<title>Blossom Word Finder</title>
+			<div class="flex py-6">
+				<h1 class="text-white font-bold">Blossom Word Finder</h1>
+			</div>
+			if !hideInput {
+				<div>
+					<form action="/games/blossom/answers" method="post">
+						<input type="text" id="center" name="center" value="p"/>
+						<input type="text" id="petals" name="petals" value="devlor"/>
+						<button id="answers-btn" class="py-4 px-6 text-white border-white border rounded">
+							Get Answers
+						</button>
+					</form>
+				</div>
+			} else {
+				<div>
+					<button id="back-button" class="px-2 text-white border-white border rounded">
+						{ 	"<-" }
+					</button>
+					<script>
+		 document.getElementById("back-button").onclick = () => { window.location.href = "/games/blossom" }
+		 </script>
+				</div>
+			}
+			<div>
+				{ children... }
+			</div>
+		</div>
+		<footer></footer>
+	}
+}
+
+templ BlossomMainErrorPage(errorText string) {
+	@BlossomMainPage(false) {
+		<span class="text-red-500">{ errorText }</span>
+	}
+}
+
+templ BlossomAnswersPage(collection games.BlossomWordInfoCollection) {
+	@BlossomMainPage(true) {
+		<div>
+			<div class="flex py-6 justify-center">
+				<button id="alpha-btn" class="py-4 px-6 mx-4 text-white border-white border rounded">
+					A-Z	
+				</button>
+				<button id="reverse-alpha-btn" class="py-4 px-6 mx-4 text-white border-white border rounded">
+					Z-A	
+				</button>
+			</div>
+			<div id="all-words" class="flex flex-wrap">
+				for _, word := range blossomSortedWords(collection) {
+					@BlossomWord(word, collection[word])
+				}
+			</div>
+			<script>
+		function alphabetical(reverse) {
+			const container = document.getElementById("all-words");
+			const spans = Array.from(container.getElementsByTagName("span"));
+			if (!reverse) {
+				spans.sort((a,b) => a.textContent.localeCompare(b.textContent));
+			} else {
+				spans.sort((a,b) => b.textContent.localeCompare(a.textContent));
+			}
+			container.innerHTML = '';
+			spans.forEach(span => container.appendChild(span));
+		}
+		const alphaButton = document.getElementById("alpha-btn"); 
+		alphaButton.onclick = () => alphabetical(false);
+		const reverseButton = document.getElementById("reverse-alpha-btn"); 
+		reverseButton.onclick = () => alphabetical(true);
+		</script>
+		</div>
+	}
+}
+
+func blossomSortedWords(collection games.BlossomWordInfoCollection) []string {
+	var words []string
+	for word := range collection {
+		words = append(words, word)
+	}
+	sort.Strings(words)
+	return words
+}
+
+templ BlossomWord(word string, info games.BlossomWordInfo) {
+	<span class="select-none m-2 p-2 bg-gray-400 text-white rounded">
+		{ word }
+	</span>
+}
