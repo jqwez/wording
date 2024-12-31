@@ -18,8 +18,22 @@ templ BlossomMainPage(hideInput bool) {
 			if !hideInput {
 				<div>
 					<form action="/games/blossom/answers" method="post">
-						<input type="text" id="center" name="center" value="p"/>
-						<input type="text" id="petals" name="petals" value="devlor"/>
+						<label class="px-2 text-white font-semibold">Center</label>
+						<input
+							type="text"
+							id="center"
+							name="center"
+							value=""
+							class="px-2 bg-gray-800 border border-white text-white"
+						/>
+						<label class="px-2 text-white font-semibold">Petals</label>
+						<input
+							type="text"
+							id="petals"
+							name="petals"
+							value=""
+							class="px-2 bg-gray-800 border border-white text-white"
+						/>
 						<button id="answers-btn" class="py-4 px-6 text-white border-white border rounded">
 							Get Answers
 						</button>
